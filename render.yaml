@@ -1,0 +1,24 @@
+services:
+  - type: worker
+    name: bitcoin-telegram-monitor
+    runtime: python
+    region: frankfurt
+    buildCommand: pip install -r requirements.txt
+    startCommand: python main.py
+    disk:
+      name: bitcoin-monitor-data
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: BTC_ADDRESS
+        sync: false
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+      - key: TELEGRAM_CHAT_ID
+        sync: false
+      - key: DB_PATH
+        value: /var/data/seen_transactions.sqlite3
+      - key: POLL_SECONDS
+        value: "15"
+      - key: LOG_LEVEL
+        value: INFO
